@@ -9,7 +9,7 @@ let package = Package(
     dependencies: [
         // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
-        .package(url: "https://github.com/vapor-community/queues-database-hooks.git", .branch("main")),
+        .package(url: "https://github.com/vapor-community/queues-database-hooks.git", from: "0.1.0"),
         .package(url: "https://github.com/vapor/leaf", from: "4.0.0-rc.1.2"),
         .package(url: "https://github.com/vapor/fluent.git", from: "4.0.0"),
         .package(url: "https://github.com/vapor/fluent-mysql-driver.git", from: "4.0.0")

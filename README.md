@@ -11,7 +11,7 @@ We use Queues extensively at Transeo (we authored the Vapor package!) and they p
 
 That led us to initially create https://github.com/gotranseo/queues-progress, a little CLI that shows you information about which jobs are hanging out in your processing queue. While that gave us great visibility into the current jobs being run, it didn't do anything to show us the status of the historical jobs. In fact, there was no mechanism for us to even keep data about historical jobs other than our logs. 
 
-This dashboard combines the best of our make-shift solutions. Building upon the new [Notification Hooks](https://github.com/vapor/queues/pull/87) feature we wrote the [database tracking package](http://github.com/vapor-community/queues-database-hooks) that stores all of the historical information about jobs. 
+This dashboard combines the best of our make-shift solutions. Building upon the new [job event delegate](https://github.com/vapor/queues/releases/tag/1.5.0) feature we wrote the [database tracking package](http://github.com/vapor-community/queues-database-hooks) that stores all of the historical information about jobs. 
 
 If you layer all of these tools together, this `queues-dash` package can sit on top of your data and observe + surface insights. 
 

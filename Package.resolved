@@ -95,18 +95,18 @@
         "package": "queues",
         "repositoryURL": "https://github.com/vapor/queues.git",
         "state": {
-          "branch": "hooks",
-          "revision": "6f5a693df624234a9b6157062d7070836d4156f5",
-          "version": null
+          "branch": null,
+          "revision": "c562842634aee8c2cb26bf186992f62af1abe6ce",
+          "version": "1.5.0"
         }
       },
       {
         "package": "queues-database-hooks",
         "repositoryURL": "https://github.com/vapor-community/queues-database-hooks.git",
         "state": {
-          "branch": "main",
-          "revision": "dc79097a1a928da13faa69c558d39e6f4f31ded1",
-          "version": null
+          "branch": null,
+          "revision": "a643cc7b563da73cd06b50c976e03cf4084dd4f5",
+          "version": "0.1.0"
         }
       },
       {

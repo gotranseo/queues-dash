@@ -1,0 +1,172 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jobs</title>
+    <link rel="stylesheet" href="/build/tailwind.css">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+</head>
+
+<body>
+    <nav class="bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <h1 class="text-lg text-white font-bold">Queues</h1>
+                    </div>
+                    <div class="md:ml-6 md:flex md:items-center">
+                        <a href="/"
+                            class="px-3 py-2 rounded-md text-sm font-medium leading-5 text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Dashboard</a>
+                        <a href="/jobs"
+                            class="ml-4 px-3 py-2 rounded-md text-sm font-medium leading-5 text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Jobs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="h-screen flex overflow-hidden bg-gray-100">
+        <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none" tabindex="0">
+            <div class="pt-2 pb-6 md:py-6">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-2xl font-semibold text-gray-900">Job Details</h1>
+                </div>
+                <div class="mt-3 max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                    <div class="flex flex-col">
+                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                                        <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                                            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                                EmailJob
+                                            </h3>
+                                            <div class="mt-1 items-center text-green-100 leading-none lg:rounded-full flex lg:inline-flex"
+                                                role="alert">
+                                                <span
+                                                    class="flex rounded-full bg-green-500 uppercase px-2 py-1 text-xs font-bold mr-3">Success</span>
+                                            </div>
+                                        </div>
+                                        <div class="px-4 py-5 sm:p-0">
+                                            <dl>
+                                                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        ID
+                                                    </dt>
+                                                    <dd
+                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        a65fa912-a093-4f34-9751-178815473c84
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Queue Name
+                                                    </dt>
+                                                    <dd
+                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        Default
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Payload
+                                                    </dt>
+                                                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                            <code class="ml-0 float-left whitespace-pre">
+{
+    "Test": "test",
+    "Test": "test",
+    "Test": "test",
+    "Test": "test",
+    "Test": "test",
+    "Test": "test",
+    "Test": "test",
+}
+                                                            </code>
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Timing
+                                                    </dt>
+                                                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        <ul class="list-disc">
+                                                            <li>Waiting: 2m 30s</li>
+                                                            <li>Execution: 30s</li>
+                                                        </ul>
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Error
+                                                    </dt>
+                                                    <dd
+                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        N/A
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Max Retry Count
+                                                    </dt>
+                                                    <dd
+                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        0
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Delay Until
+                                                    </dt>
+                                                    <dd
+                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        N/A
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Queued At
+                                                    </dt>
+                                                    <dd
+                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        August 10th, 2020, 10:54:24 PM EST
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Completed At
+                                                    </dt>
+                                                    <dd
+                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        August 10th, 2020, 10:56:24 PM EST
+                                                    </dd>
+                                                </div>
+                                            </dl>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

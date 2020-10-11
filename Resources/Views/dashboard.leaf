@@ -1,0 +1,356 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/build/tailwind.css">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+</head>
+
+<body>
+    <nav class="bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <h1 class="text-lg text-white font-bold">Queues</h1>
+                    </div>
+                    <div class="md:ml-6 md:flex md:items-center">
+                        <a href="/"
+                            class="px-3 py-2 rounded-md text-sm font-medium leading-5 text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Dashboard</a>
+                        <a href="/jobs"
+                            class="ml-4 px-3 py-2 rounded-md text-sm font-medium leading-5 text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Jobs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="h-screen flex overflow-hidden bg-gray-100">
+        <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none" tabindex="0">
+            <div class="pt-2 pb-6 md:py-6">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
+                    <div class="md:w-1/4 mb-6 md:mb-0">
+                        <div class="relative">
+                            <select
+                                onchange="changeHours()"
+                                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="hours-select">
+                                <option #if(hours == 1): selected #endif value="1">Last 1 Hour</option>
+                                <option #if(hours == 2): selected #endif value="2">Last 2 Hours</option>
+                                <option #if(hours == 6): selected #endif value="6">Last 6 Hours</option>
+                                <option #if(hours == 12): selected #endif value="12">Last 12 Hours</option>
+                                <option #if(hours == 18): selected #endif value="18">Last 18 Hours</option>
+                                <option #if(hours == 24): selected #endif value="24">Last 24 Hours</option>
+                                <option #if(hours == 36): selected #endif value="36">Last 36 Hours</option>
+                                <option #if(hours == 48): selected #endif value="48">Last 48 Hours</option>
+                                <option #if(hours == 120): selected #endif value="120">Last 5 Days</option>
+                                <option #if(hours == 168): selected #endif value="168">Last Week</option>
+                                <option #if(hours == 744): selected #endif value="744">Last Month</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                            </div>
+                        </div>
+                      </div>
+                </div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                    <div>
+                        <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+                            <div class="bg-white overflow-hidden shadow rounded-lg">
+                                <div class="px-4 py-5 sm:p-6">
+                                    <dl>
+                                        <dt class="text-sm leading-5 font-medium text-gray-500 truncate">
+                                            Completed Jobs Last #(hours) Hour#if(hours > 1):s #endif
+                                        </dt>
+                                        <dd class="mt-1 text-3xl leading-9 font-semibold text-gray-900">
+                                            #(completedJobData.completedJobs)
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="bg-white overflow-hidden shadow rounded-lg">
+                                <div class="px-4 py-5 sm:p-6">
+                                    <dl>
+                                        <dt class="text-sm leading-5 font-medium text-gray-500 truncate">
+                                            Jobs Currently Running
+                                        </dt>
+                                        <dd class="mt-1 text-3xl leading-9 font-semibold text-gray-900">
+                                            #(currentJobData.runningCount)
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="bg-white overflow-hidden shadow rounded-lg">
+                                <div class="px-4 py-5 sm:p-6">
+                                    <dl>
+                                        <dt class="text-sm leading-5 font-medium text-gray-500 truncate">
+                                            Jobs Currently Waiting
+                                        </dt>
+                                        <dd class="mt-1 text-3xl leading-9 font-semibold text-gray-900">
+                                            #(currentJobData.queuedCount)
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="bg-white overflow-hidden shadow rounded-lg">
+                                <div class="px-4 py-5 sm:p-6">
+                                    <dl>
+                                        <dt class="text-sm leading-5 font-medium text-gray-500 truncate">
+                                            Avg. Run Time
+                                        </dt>
+                                        <dd id="average-run-time" class="mt-1 text-3xl leading-9 font-semibold text-gray-900">
+                                            
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="bg-white overflow-hidden shadow rounded-lg">
+                                <div class="px-4 py-5 sm:p-6">
+                                    <dl>
+                                        <dt class="text-sm leading-5 font-medium text-gray-500 truncate">
+                                            Avg. Wait Time
+                                        </dt>
+                                        <dd id="average-wait-time" class="mt-1 text-3xl leading-9 font-semibold text-gray-900">
+                                            
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="bg-white overflow-hidden shadow rounded-lg">
+                                <div class="px-4 py-5 sm:p-6">
+                                    <dl>
+                                        <dt class="text-sm leading-5 font-medium text-green-500 truncate">
+                                            Successful % Last #(hours) Hour#if(hours > 1):s #endif
+                                        </dt>
+                                        <dd class="mt-1 text-3xl leading-9 font-semibold text-gray-900">
+                                            #(completedJobData.percentSuccess * 100)%
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-4">
+                        <div>
+                            <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                                <div class="rounded">
+                                    <div class="max-w-7xl mx-auto">
+                                        <h1 class="text-lg font-semibold text-gray-900">Throughput Last 24 Hrs</h1>
+                                    </div>
+                                    <div class="rounded w-full" x-data="{stockTicker:stockTicker()}" x-init="stockTicker.renderChart()">
+                                        <div class="px-5 pb-4 pt-8 bg-indigo-500 text-white items-center">
+                                            <canvas height="300px" id="chart" class="w-full h-full"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rounded">
+                                    <div class="max-w-7xl mx-auto">
+                                        <h1 class="text-lg font-semibold text-gray-900">Execution Time Last 24 Hrs</h1>
+                                    </div>
+                                    <div class="rounded w-full" x-data="{stockTickerTwo:stockTickerTwo()}" x-init="stockTickerTwo.renderChart()">
+                                        <div class="px-5 pb-4 pt-8 bg-indigo-500 text-white items-center">
+                                            <canvas height="300px" id="chart2" class="w-full h-full"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+<script>
+    function changeHours() {
+        let value = document.getElementById("hours-select").value;
+        window.location.href = "/?hours=" + value;
+    }
+
+    function forHumans(seconds) {
+        var levels = [
+            [Math.floor(seconds / 31536000), 'yr'],
+            [Math.floor((seconds % 31536000) / 86400), 'd'],
+            [Math.floor(((seconds % 31536000) % 86400) / 3600), 'hr'],
+            [Math.floor((((seconds % 31536000) % 86400) % 3600) / 60), 'm'],
+            [(((seconds % 31536000) % 86400) % 3600) % 60, 's'],
+        ];
+        var returntext = '';
+
+        for (var i = 0, max = levels.length; i < max; i++) {
+            if (levels[i][0] === 0) continue;
+            returntext += ' ' + levels[i][0] + (levels[i][1]);
+        };
+        return returntext.trim();
+    }
+
+    #if(timingData.avgRunTime):
+        document.getElementById("average-run-time").innerHTML = forHumans(#(timingData.avgRunTime))
+    #else:
+        document.getElementById("average-run-time").innerHTML = "N/A"
+    #endif
+
+    #if(timingData.avgWaitTime):
+        document.getElementById("average-wait-time").innerHTML = forHumans(#(timingData.avgWaitTime))
+    #else:
+        document.getElementById("average-wait-time").innerHTML = "N/A"
+    #endif    
+</script>
+
+<script>
+    Number.prototype.m_formatter = function() {
+        return this > 999999 ? (this / 1000000).toFixed(1) + 'M' : this
+    };
+    
+    let stockTicker = function(){
+        return {
+            chartData: {
+                labels: [#for(key in throughputValues):'#(key.key)', #endfor],
+                data: [#for(key in throughputValues):#(key.value), #endfor],
+            },
+            renderChart: function(){
+                let c = false;
+    
+                Chart.helpers.each(Chart.instances, function(instance) {
+                    if (instance.chart.canvas.id == 'chart') {
+                        c = instance;
+                    }
+                });
+    
+                if(c) {
+                    c.destroy();
+                }
+    
+                let ctx = document.getElementById('chart').getContext('2d');
+                let chart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: this.chartData.labels,
+                        datasets: [
+                            {
+                                label: '',
+                                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                                borderColor: "rgba(255, 255, 255, 1)",
+                                pointBackgroundColor: "rgba(255, 255, 255, 1)",
+                                data: this.chartData.data,
+                            },
+                        ],
+                    },
+                    layout: {
+                        padding: {
+                            right: 10
+                        }
+                    },
+                    options: {
+                        legend: {
+                            display: false,
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    fontColor: "rgba(255, 255, 255, 1)",
+                                },
+                                gridLines: {
+                                    display: false,
+                                },
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    fontColor: "rgba(255, 255, 255, 1)",
+                                },
+                                gridLines: {
+                                    color: "rgba(255, 255, 255, .2)",
+                                    borderDash: [5, 5],
+                                    zeroLineColor: "rgba(255, 255, 255, .2)",
+                                    zeroLineBorderDash: [5, 5]
+                                },
+                            }]
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    let stockTickerTwo = function(){
+        return {
+            chartData: {
+                labels: [#for(key in executionTimeValues):'#(key.key)', #endfor],
+                data: [#for(key in executionTimeValues):#(key.value), #endfor],
+            },
+            renderChart: function(){
+                let c = false;
+    
+                Chart.helpers.each(Chart.instances, function(instance) {
+                    if (instance.chart.canvas.id == 'chart2') {
+                        c = instance;
+                    }
+                });
+    
+                if(c) {
+                    c.destroy();
+                }
+    
+                let ctx = document.getElementById('chart2').getContext('2d');
+                let chart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: this.chartData.labels,
+                        datasets: [
+                            {
+                                label: '',
+                                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                                borderColor: "rgba(255, 255, 255, 1)",
+                                pointBackgroundColor: "rgba(255, 255, 255, 1)",
+                                data: this.chartData.data,
+                            },
+                        ],
+                    },
+                    layout: {
+                        padding: {
+                            right: 10
+                        }
+                    },
+                    options: {
+                        legend: {
+                            display: false,
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    fontColor: "rgba(255, 255, 255, 1)",
+                                },
+                                gridLines: {
+                                    display: false,
+                                },
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    fontColor: "rgba(255, 255, 255, 1)",
+                                },
+                                gridLines: {
+                                    color: "rgba(255, 255, 255, .2)",
+                                    borderDash: [5, 5],
+                                    zeroLineColor: "rgba(255, 255, 255, .2)",
+                                    zeroLineBorderDash: [5, 5]
+                                },
+                            }]
+                        }
+                    }
+                });
+            }
+        }
+    }
+    </script>
+</body>
+
+</html>

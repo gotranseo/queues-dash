@@ -43,12 +43,20 @@
                                     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
                                         <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
                                             <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                                EmailJob
+                                                #(job.jobName)
                                             </h3>
-                                            <div class="mt-1 items-center text-green-100 leading-none lg:rounded-full flex lg:inline-flex"
-                                                role="alert">
-                                                <span
-                                                    class="flex rounded-full bg-green-500 uppercase px-2 py-1 text-xs font-bold mr-3">Success</span>
+                                            <div class="items-center text-#if(job.status == 0):cool-gray#elseif(job.status == 1):indigo#elseif(job.status == 2):green#else:red#endif-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+                                                <span class="flex rounded-full bg-#if(job.status == 0):cool-gray#elseif(job.status == 1):indigo#elseif(job.status == 2):green#else:red#endif-500 uppercase px-2 py-1 text-xs font-bold mr-3">
+                                                #if(job.status == 0):
+                                                    Queued
+                                                #elseif(job.status == 1):
+                                                    Running
+                                                #elseif(job.status == 2):
+                                                    Success
+                                                #else:
+                                                    Failed
+                                                #endif
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="px-4 py-5 sm:p-0">
@@ -59,7 +67,45 @@
                                                     </dt>
                                                     <dd
                                                         class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                                        a65fa912-a093-4f34-9751-178815473c84
+                                                        #(job.jobId)
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Queued At
+                                                    </dt>
+                                                    <dd
+                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        #dateFormat(job.queuedAt)
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Dequeued At
+                                                    </dt>
+                                                    <dd
+                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        #if(job.dequeuedAt):
+                                                            #dateFormat(job.dequeuedAt)
+                                                        #else: 
+                                                            N/A
+                                                        #endif
+                                                    </dd>
+                                                </div>
+                                                <div
+                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                        Completed At
+                                                    </dt>
+                                                    <dd
+                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        #if(job.completedAt):
+                                                            #dateFormat(job.completedAt)
+                                                        #else: 
+                                                            N/A
+                                                        #endif
                                                     </dd>
                                                 </div>
                                                 <div
@@ -69,7 +115,7 @@
                                                     </dt>
                                                     <dd
                                                         class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                                        Default
+                                                        #(job.queueName)
                                                     </dd>
                                                 </div>
                                                 <div
@@ -78,17 +124,10 @@
                                                         Payload
                                                     </dt>
                                                     <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                                            <code class="ml-0 float-left whitespace-pre">
-{
-    "Test": "test",
-    "Test": "test",
-    "Test": "test",
-    "Test": "test",
-    "Test": "test",
-    "Test": "test",
-    "Test": "test",
-}
-                                                            </code>
+                                                    <a id="reveal-button" onclick="revealPayload()" href="#" class="text-indigo-600 hover:text-indigo-900">Reveal</a>
+                                                    <code id="code-block" style="display: none !important; overflow: scroll" class="whitespace-pre">
+<span id="code"></span>
+                                                    </code>
                                                     </dd>
                                                 </div>
                                                 <div
@@ -98,8 +137,8 @@
                                                     </dt>
                                                     <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
                                                         <ul class="list-disc">
-                                                            <li>Waiting: 2m 30s</li>
-                                                            <li>Execution: 30s</li>
+                                                            <li>Waiting: <span id="waiting"></span></li>
+                                                            <li>Execution: <span id="execution"></span></li>
                                                         </ul>
                                                     </dd>
                                                 </div>
@@ -110,7 +149,11 @@
                                                     </dt>
                                                     <dd
                                                         class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                                        N/A
+                                                        #if(job.errorString):
+                                                            #(job.errorString)
+                                                        #else:
+                                                            N/A
+                                                        #endif
                                                     </dd>
                                                 </div>
                                                 <div
@@ -120,7 +163,7 @@
                                                     </dt>
                                                     <dd
                                                         class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                                        0
+                                                        #(job.maxRetryCount)
                                                     </dd>
                                                 </div>
                                                 <div
@@ -130,34 +173,16 @@
                                                     </dt>
                                                     <dd
                                                         class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                                        N/A
-                                                    </dd>
-                                                </div>
-                                                <div
-                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
-                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
-                                                        Queued At
-                                                    </dt>
-                                                    <dd
-                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                                        August 10th, 2020, 10:54:24 PM EST
-                                                    </dd>
-                                                </div>
-                                                <div
-                                                    class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
-                                                    <dt class="text-sm leading-5 font-medium text-gray-500">
-                                                        Completed At
-                                                    </dt>
-                                                    <dd
-                                                        class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                                        August 10th, 2020, 10:56:24 PM EST
+                                                        #if(job.delayUntil):
+                                                            #dateFormat(job.delayUntil)
+                                                        #else: 
+                                                            N/A
+                                                        #endif
                                                     </dd>
                                                 </div>
                                             </dl>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -167,6 +192,56 @@
             </div>
         </main>
     </div>
+
+    <script>
+        function forHumans(seconds) {
+            var levels = [
+                [Math.floor(seconds / 31536000), 'yr'],
+                [Math.floor((seconds % 31536000) / 86400), 'd'],
+                [Math.floor(((seconds % 31536000) % 86400) / 3600), 'hr'],
+                [Math.floor((((seconds % 31536000) % 86400) % 3600) / 60), 'm'],
+                [(((seconds % 31536000) % 86400) % 3600) % 60, 's'],
+            ];
+            var returntext = '';
+
+            for (var i = 0, max = levels.length; i < max; i++) {
+                if (levels[i][0] === 0) continue;
+                returntext += ' ' + (levels[i][1] === 's' ? Math.floor(levels[i][0]) : levels[i][0]) + (levels[i][1]);
+            };
+            return returntext.trim();
+        }
+
+        function setTimes() {
+            #if(job.status == 0):
+                document.getElementById("waiting").innerHTML = forHumans(Math.floor(Date.now() / 1000) - #(job.queuedAt))
+                document.getElementById("execution").innerHTML = "N/A"
+            #elseif(job.status == 1):
+                document.getElementById("waiting").innerHTML = forHumans(#(job.dequeuedAt - job.queuedAt))
+                document.getElementById("execution").innerHTML = forHumans(Math.floor(Date.now() / 1000) - #(job.dequeuedAt))
+            #else:
+                document.getElementById("waiting").innerHTML = forHumans(#(job.dequeuedAt - job.queuedAt))
+                document.getElementById("execution").innerHTML = forHumans(#(job.completedAt - job.dequeuedAt))
+            #endif
+        }
+
+        function bin2String(array) {
+            var result = "";
+            for (var i = 0; i < array.length; i++) {
+                result += String.fromCharCode.apply(parseInt(array[i], 2));
+            }
+            return result;
+        }
+
+        function revealPayload() {
+            let payload = [#for(item in job.payload):"#(item)", #endfor];
+            document.getElementById("code-block").style.display = 'block';
+            document.getElementById("reveal-button").style.display = 'none';
+            document.getElementById("code").innerHTML = JSON.stringify(JSON.parse(String.fromCharCode.apply(null, payload)), null, 2);
+        }
+
+        setTimes();
+        setInterval(setTimes,1000);
+    </script>
 </body>
 
 </html>

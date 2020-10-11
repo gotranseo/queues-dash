@@ -34,6 +34,48 @@
             <div class="pt-2 pb-6 md:py-6">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h1 class="text-2xl font-semibold text-gray-900">Jobs</h1>
+                    <div class="md:w-1/4 mb-6 md:mb-0">
+                        <div class="relative">
+                            <select
+                                onchange="changeHours()"
+                                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="hours-select">
+                                <option #if(hours == 1): selected #endif value="1">Last 1 Hour</option>
+                                <option #if(hours == 2): selected #endif value="2">Last 2 Hours</option>
+                                <option #if(hours == 6): selected #endif value="6">Last 6 Hours</option>
+                                <option #if(hours == 12): selected #endif value="12">Last 12 Hours</option>
+                                <option #if(hours == 18): selected #endif value="18">Last 18 Hours</option>
+                                <option #if(hours == 24): selected #endif value="24">Last 24 Hours</option>
+                                <option #if(hours == 36): selected #endif value="36">Last 36 Hours</option>
+                                <option #if(hours == 48): selected #endif value="48">Last 48 Hours</option>
+                                <option #if(hours == 120): selected #endif value="120">Last 5 Days</option>
+                                <option #if(hours == 168): selected #endif value="168">Last Week</option>
+                                <option #if(hours == 744): selected #endif value="744">Last Month</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 md:w-1/4 mb-6 md:mb-0">
+                        <div class="relative">
+                            <select
+                                onchange="changeHours()"
+                                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="filter-select">
+                                <option #if(filter == -1): selected #endif value="-1">All Statuses</option>
+                                <option #if(filter == 0): selected #endif value="0">Queued</option>
+                                <option #if(filter == 1): selected #endif value="1">Running</option>
+                                <option #if(filter == 2): selected #endif value="2">Success</option>
+                                <option #if(filter == 3): selected #endif value="3">Error</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="mt-3 max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                     <div class="flex flex-col">
@@ -68,267 +110,47 @@
                                         </thead>
                                         <tbody>
                                             <!-- Odd row -->
-                                            <tr class="bg-white">
+                                            #for(job in jobs):
+                                            <tr class="#if(isEven(index)):bg-white#else:bg-gray-50#endif">
                                                 <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-                                                    EmailJob
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
+                                                #(job.jobName)
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
 
-                                                    a65fa912-a093-4f34-9751-178815473c84
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    <div class="items-center text-cool-gray-100 leading-none lg:rounded-full flex lg:inline-flex"
-                                                        role="alert">
-                                                        <span
-                                                            class="flex rounded-full bg-cool-gray-500 uppercase px-2 py-1 text-xs font-bold mr-3">Queued</span>
-                                                    </div>
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    August 10th 2020, 10:05:24 PM EST
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    Default
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                                </td>
+                                                #(job.jobId)
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                <div class="items-center text-#if(job.status == 0):cool-gray#elseif(job.status == 1):indigo#elseif(job.status == 2):green#else:red#endif-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+                                                    <span class="flex rounded-full bg-#if(job.status == 0):cool-gray#elseif(job.status == 1):indigo#elseif(job.status == 2):green#else:red#endif-500 uppercase px-2 py-1 text-xs font-bold mr-3">
+                                                    #if(job.status == 0):
+                                                        Queued
+                                                    #elseif(job.status == 1):
+                                                        Running
+                                                    #elseif(job.status == 2):
+                                                        Success
+                                                    #else:
+                                                        Failed
+                                                    #endif
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                #dateFormat(job.queuedAt)
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                #(job.queueName)
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
+                                                <a href="/job/#(job.id)" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                            </td>
+                                                
                                             </tr>
-
-                                            <!-- Even row -->
-                                            <tr class="bg-gray-50">
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-                                                    EmailJob
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    a65fa912-a093-4f34-9751-178815473c84
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    <div class="items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex"
-                                                        role="alert">
-                                                        <span
-                                                            class="flex rounded-full bg-indigo-500 uppercase px-2 py-1 text-xs font-bold mr-3">Running</span>
-                                                    </div>
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    August 10th 2020, 10:05:24 PM EST
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    Default
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                                </td>
-                                            </tr>
-
-                                            <tr class="bg-white">
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-                                                    EmailJob
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    a65fa912-a093-4f34-9751-178815473c84
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    <div class="items-center text-red-100 leading-none lg:rounded-full flex lg:inline-flex"
-                                                        role="alert">
-                                                        <span
-                                                            class="flex rounded-full bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
-                                                    </div>
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    August 10th 2020, 10:05:24 PM EST
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    Default
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                                </td>
-                                            </tr>
-
-                                            <tr class="bg-gray-50">
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-                                                    EmailJob
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    a65fa912-a093-4f34-9751-178815473c84
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    <div class="items-center text-green-100 leading-none lg:rounded-full flex lg:inline-flex"
-                                                        role="alert">
-                                                        <span
-                                                            class="flex rounded-full bg-green-500 uppercase px-2 py-1 text-xs font-bold mr-3">Success</span>
-                                                    </div>
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    August 10th 2020, 10:05:24 PM EST
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    Default
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                                </td>
-                                            </tr>
-                                            <!-- Odd row -->
-                                            <tr class="bg-white">
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-                                                    EmailJob
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    a65fa912-a093-4f34-9751-178815473c84
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    <div class="items-center text-cool-gray-100 leading-none lg:rounded-full flex lg:inline-flex"
-                                                        role="alert">
-                                                        <span
-                                                            class="flex rounded-full bg-cool-gray-500 uppercase px-2 py-1 text-xs font-bold mr-3">Queued</span>
-                                                    </div>
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    August 10th 2020, 10:05:24 PM EST
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    Default
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                                </td>
-                                            </tr>
-
-                                            <!-- Even row -->
-                                            <tr class="bg-gray-50">
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-                                                    EmailJob
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    a65fa912-a093-4f34-9751-178815473c84
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    <div class="items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex"
-                                                        role="alert">
-                                                        <span
-                                                            class="flex rounded-full bg-indigo-500 uppercase px-2 py-1 text-xs font-bold mr-3">Running</span>
-                                                    </div>
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    August 10th 2020, 10:05:24 PM EST
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    Default
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                                </td>
-                                            </tr>
-
-                                            <tr class="bg-white">
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-                                                    EmailJob
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    a65fa912-a093-4f34-9751-178815473c84
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    <div class="items-center text-red-100 leading-none lg:rounded-full flex lg:inline-flex"
-                                                        role="alert">
-                                                        <span
-                                                            class="flex rounded-full bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
-                                                    </div>
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    August 10th 2020, 10:05:24 PM EST
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    Default
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                                </td>
-                                            </tr>
-
-                                            <tr class="bg-gray-50">
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-                                                    EmailJob
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    a65fa912-a093-4f34-9751-178815473c84
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-
-                                                    <div class="items-center text-green-100 leading-none lg:rounded-full flex lg:inline-flex"
-                                                        role="alert">
-                                                        <span
-                                                            class="flex rounded-full bg-green-500 uppercase px-2 py-1 text-xs font-bold mr-3">Success</span>
-                                                    </div>
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    August 10th 2020, 10:05:24 PM EST
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                                    Default
-                                                </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                                </td>
-                                            </tr>
+                                            #endfor                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -340,6 +162,14 @@
             </div>
         </main>
     </div>
+
+    <script>
+        function changeHours() {
+            let value = document.getElementById("hours-select").value;
+            let filter = document.getElementById("filter-select").value;
+            window.location.href = "/jobs?hours=" + value + "&filter=" + filter;
+        }
+    </script>
 </body>
 
 </html>

@@ -8,6 +8,8 @@ import FluentKit
 public func configure(_ app: Application) throws {
     app.views.use(.leaf)
     app.leaf.cache.isEnabled = app.environment.isRelease
+    app.leaf.tags["isEven"] = IsEvenTag()
+    app.leaf.tags["dateFormat"] = DateFormatTag()
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
     guard let databaseUrlString = Environment.get("DATABASE_URL") else { throw Abort(.internalServerError) }

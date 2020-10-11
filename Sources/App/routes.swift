@@ -4,4 +4,5 @@ import QueuesDatabaseHooks
 
 func routes(_ app: Application) throws {
     try app.routes.register(collection: DashboardController())
+    try app.routes.register(collection: JobsController())
 }
